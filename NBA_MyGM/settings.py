@@ -73,10 +73,20 @@ WSGI_APPLICATION = 'NBA_MyGM.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+#Using Microsoft SQL Server (MSSQL)
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'nba_database',  # Your database name
+        'USER': 'sa',
+        'PASSWORD': 'CC42C1C66A34A90B8CA76AA56C16D712032FCD8926FABB5BB16E8309AA704245',  # Use your SA password here
+        'HOST': 'db',  # The name of the db service from your Docker Compose file
+        'PORT': '1433',  # Default MSSQL port 
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',  # You might need to install this driver
+            'extra_params': 'TrustServerCertificate=yes;',
+        },
     }
 }
 
