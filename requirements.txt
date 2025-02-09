@@ -2,3 +2,5 @@ Django==4.0.0
 django-mssql-backend==2.8.0  # For MSSQL integration with Django
 requests==2.26.0  # For web scraping
 beautifulsoup4==4.10.0  # For BeautifulSoup (scraping)
+pyodbc==4.0.30
+djangorestframework==3.12.4  
