@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,8 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f#ynjzgxr%t%kw@ygq*a3s8x0krbs(yy0%=8x%=oltta!5)l-q'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')  # Replace with actual environment variable
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,18 +78,15 @@ WSGI_APPLICATION = 'NBA_MyGM.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'nba_database',  # Your database name
-        'USER': 'sa',
-        'PASSWORD': 'CC42C1C66A34A90B8CA76AA56C16D712032FCD8926FABB5BB16E8309AA704245',  # Use your SA password here
-        'HOST': 'db',  # The name of the db service from your Docker Compose file
-        'PORT': '1433',  # Default MSSQL port 
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',  # You might need to install this driver
-            'extra_params': 'TrustServerCertificate=yes;',
-        },
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'nbaGM_database'),  # Update default db name
+        'USER': os.getenv('POSTGRES_USER', 'nbaGM_admin'),  # Default username
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'your_password'),  # Default password
+        'HOST': os.getenv('DATABASE_HOST', 'db'),  # Use 'db' for Docker container communication
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation

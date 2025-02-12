@@ -7,26 +7,16 @@ WORKDIR /app
 # Copy your code into the container
 COPY . .
 
-# Install required dependencies
-RUN pip install --upgrade pip
-# Install the dependencies from the requirements.txt file
-RUN pip install --no-cache-dir -r requirements.txt
-#Install Django
-RUN pip install django
-
-# Install ODBC Driver for SQL Server (necessary for django-mssql-backend)
+# Install required system libraries and Python dependencies in one step
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
     curl \
     gnupg2 \
-    unixodbc-dev \
-    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-    && curl https://packages.microsoft.com/mssql-server-2017/debian/packages-mssql-2017.repo > /etc/apt/sources.list.d/mssql-server-2017.list \
-    && apt-get update \
-    && apt-get install -y msodbcsql17
-
-# Install django-mssql-backend specifically
-RUN pip install django-mssql-backend
+    libpq-dev \
+    && apt-get clean \
+    && pip install --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt \
+    && pip install psycopg2  # Install psycopg2 (if not included in requirements.txt)
 
 # Set the environment variable for the Django settings module
 ENV DJANGO_SETTINGS_MODULE=myproject.settings

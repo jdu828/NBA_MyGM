@@ -2,17 +2,18 @@ version: '3.8'
 
 services:
   db:
-    image: mcr.microsoft.com/mssql/server:latest
-    container_name: NBA_MyGM_mssql
+    image: postgres:14  # Use the official PostgreSQL image
+    container_name: NBA_MyGM_postgres_DB
     ports:
-      - "1433:1433"  # Expose MSSQL port
+      - "5432:5432"  # Expose PostgreSQL port
     environment:
-      SA_PASSWORD: "CC42C1C66A34A90B8CA76AA56C16D712032FCD8926FABB5BB16E8309AA704245"  # Strong password for SA
-      ACCEPT_EULA: "Y"  # Accept EULA for MSSQL Server
-      MSSQL_PID: "Developer"  # Developer version
-    restart: always  # Always restart MSSQL container
+      POSTGRES_DB: ${POSTGRES_DB}  # Name of your database
+      POSTGRES_USER: ${POSTGRES_USER}  # Username for PostgreSQL
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # Strong password for PostgreSQL
+      
+    restart: always  # Restart container if it crashes
     volumes:
-      - mssql_data:/var/opt/mssql  # Persist database data in a Docker volume
+      - postgres_data:/var/lib/postgresql/data  # Persist database data in a Docker volume
 
   web:
     build: .
@@ -26,9 +27,11 @@ services:
       - db  # Ensure DB is started before Django app
     environment:
       DATABASE_HOST: db  # Point to the db container
-      DATABASE_NAME: nba_database
-      DATABASE_USER: sa
-      DATABASE_PASSWORD: "CC42C1C66A34A90B8CA76AA56C16D712032FCD8926FABB5BB16E8309AA704245"
+      DATABASE_NAME: ${POSTGRES_DB}
+      DATABASE_USER: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      
 
 volumes:
-  mssql_data:  # Named volume for MSSQL data persistence
+  postgres_data:  # Named volume for PostgreSQL data persistence
