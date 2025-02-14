@@ -7,10 +7,12 @@ services:
     ports:
       - "5432:5432"  # Expose PostgreSQL port
     environment:
+    
       POSTGRES_DB: ${POSTGRES_DB}  # Name of your database
       POSTGRES_USER: ${POSTGRES_USER}  # Username for PostgreSQL
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # Strong password for PostgreSQL
-      
+      DEBUG: True
+
     restart: always  # Restart container if it crashes
     volumes:
       - postgres_data:/var/lib/postgresql/data  # Persist database data in a Docker volume
@@ -22,7 +24,7 @@ services:
     container_name: nba_django
     command: python manage.py runserver 0.0.0.0:8000  # Start Django server
     volumes:
-      - .:/app  # Mount code into the container
+      - ../:/app  # Mount code into the container
     ports:
       - "8000:8000"  # Expose Django app
     depends_on:
@@ -33,6 +35,7 @@ services:
       DATABASE_USER: ${POSTGRES_USER}
       DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DEBUG: True
       
 
 volumes:

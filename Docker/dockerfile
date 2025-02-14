@@ -19,10 +19,10 @@ RUN apt-get update && apt-get install -y \
     && pip install --no-cache-dir -r requirements.txt \
     && pip install psycopg2  # Install psycopg2 (if not included in requirements.txt)
 
-COPY . .
+COPY . /app/
 
 # Set the environment variable for the Django settings module
-ENV DJANGO_SETTINGS_MODULE=myproject.settings
+ENV DJANGO_SETTINGS_MODULE=NBA_MyGM.settings
 
 # Expose the port for the Django development server
 EXPOSE 8000
