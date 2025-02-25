@@ -4,3 +4,4 @@ beautifulsoup4==4.10.0  # For BeautifulSoup (scraping)
 djangorestframework==3.12.4
 psycopg2-binary==2.9.6 # For PostGreSQL
 gunicorn==20.1.0
+

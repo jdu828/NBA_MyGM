@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB', 'nbaGM_database'),  # Update default db name
         'USER': os.getenv('POSTGRES_USER', 'nbaGM_admin'),  # Default username
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'your_password'),  # Default password
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),  # Default password
         'HOST': os.getenv('DATABASE_HOST', 'db'),  # Use 'db' for Docker container communication
         'PORT': '5432',
     }
