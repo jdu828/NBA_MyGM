@@ -17,51 +17,9 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt \
-    && pip install psycopg2  \
-    && pip install selenium
+    && pip install psycopg2  
 
-# Install dependencies (for Chrome and ChromeDriver)
-RUN apt-get update && apt-get install -y \
-    wget \
-    curl \
-    unzip \
-    ca-certificates \
-    gnupg \
-    fonts-liberation \
-    libasound2 \
-    libatk-bridge2.0-0 \
-    libatk1.0-0 \
-    libatspi2.0-0 \
-    libcups2 \
-    libdbus-1-3 \
-    libgbm1 \
-    libgtk-3-0 \
-    libnspr4 \
-    libnss3 \
-    libvulkan1 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxfixes3 \
-    libxkbcommon0 \
-    libxrandr2 \
-    xdg-utils \
-    --no-install-recommends \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
 
-# Install Google Chrome (Stable version)
-RUN curl -sS https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome.deb \
-    && dpkg -i google-chrome.deb \
-    && apt-get install -f -y \
-    && rm google-chrome.deb
-
-# Install ChromeDriver (match with the Chrome version)
-RUN CHROME_VERSION=$(google-chrome --version | sed 's/Google Chrome //') && \
-    DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION%%.*}) && \
-    wget https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip && \
-    unzip chromedriver_linux64.zip && \
-    mv chromedriver /usr/local/bin/ && \
-    rm chromedriver_linux64.zip
 
 COPY . /app/
 
